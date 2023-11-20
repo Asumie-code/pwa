@@ -51,20 +51,20 @@ self.addEventListener("fetch", async (event) => {
     return;
   }
 
-  // // For all other requests, go to the cache first, and then the network.
-  // event.respondWith(
-  //   (async () => {
-  //     const cache = await caches.open(CACHE_NAME);
-  //     console.log(event.request.url)
-  //     const cachedResponse = await cache.match(event.request.url);
-  //     if (cachedResponse) {
-  //       // Return the cached response if it's available.
-  //       return cachedResponse;
-  //     }
-  //     const networkResposne = await fetch(event.request)
-  //     if (networkResposne) return networkResposne
-  //     // If resource isn't in the cache, return a 404.
-  //     return new Response(null, { status: 404 });
-  //   })(),
-  // );
+  // For all other requests, go to the cache first, and then the network.
+  event.respondWith(
+    (async () => {
+      const cache = await caches.open(CACHE_NAME);
+      console.log(event.request.url)
+      const cachedResponse = await cache.match(event.request.url);
+      if (cachedResponse) {
+        // Return the cached response if it's available.
+        return cachedResponse;
+      }
+      const networkResposne = await fetch(event.request)
+      if (networkResposne) return networkResposne
+      // If resource isn't in the cache, return a 404.
+      return new Response(null, { status: 404 });
+    })(),
+  );
 });
